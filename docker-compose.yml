@@ -1,0 +1,13 @@
+
+services:
+  ib-scripts:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ib-scripts
+    volumes:
+      - .:/scripts  # Mount current directory into /scripts
+    working_dir: /scripts
+    network_mode: host  # Allows access to IBGW on localhost:4002
+    stdin_open: true
+    tty: true

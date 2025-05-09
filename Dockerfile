@@ -13,6 +13,9 @@ RUN apt-get update && apt-get install -y \
     build-essential \
     && rm -rf /var/lib/apt/lists/*
 
+# Add a non-root user
+RUN groupadd -r appuser && useradd -r -g appuser appuser
+
 # Install IBAPI manually
 RUN mkdir -p ${TWSAPI_DIR} && \
     cd ${TWSAPI_DIR} && \
@@ -28,6 +31,11 @@ RUN mkdir -p ${TWSAPI_DIR} && \
 COPY requirements.txt /tmp/
 RUN pip install --no-cache-dir -r /tmp/requirements.txt
 
+# Set permissions for the non-root user
+RUN chown -R appuser:appuser /scripts
+
+# Switch to the non-root user
+USER appuser
+
 # Default command
 CMD ["bash"]
-

@@ -14,7 +14,8 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Add a non-root user
-RUN groupadd -r appuser && useradd -r -g appuser appuser
+RUN groupadd -r appuser && useradd -r -g appuser appuser && \
+    mkdir -p /home/appuser && chown -R appuser:appuser /home/appuser
 
 # Install IBAPI manually
 RUN mkdir -p ${TWSAPI_DIR} && \
